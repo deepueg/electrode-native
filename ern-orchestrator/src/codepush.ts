@@ -435,6 +435,7 @@ export async function performCodePushOtaUpdate(
       `CodePush release for ${napDescriptor.toString()} ${deploymentName}`
     )
   } catch (e) {
+    log.error(`Error : ${JSON.stringify(e)}`)
     if (cauldron) {
       await cauldron.discardTransaction()
     }

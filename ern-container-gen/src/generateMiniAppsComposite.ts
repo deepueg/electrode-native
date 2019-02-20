@@ -130,7 +130,7 @@ export async function generateMiniAppsComposite(
     await runAfterJsCompositeGenerationScript(outDir)
 
     log.debug('Removing .babelrc files from all modules')
-    shell.rm('-rf', path.join('node_modules', '**', '.babelrc'))
+    // shell.rm('-rf', path.join('node_modules', '**', '.babelrc'))
 
     log.debug('Creating top level composite .babelrc')
     const compositeBabelRc: { plugins: any[]; presets?: string[] } = {
@@ -234,7 +234,31 @@ export async function generateMiniAppsComposite(
       compositeBabelRc.presets = ['react-native']
     }
 
-    await writeFile('.babelrc', JSON.stringify(compositeBabelRc, null, 2))
+    const customRC = `{
+      "env": {
+        "development": {
+          "plugins": ["transform-react-jsx-source", "transform-inline-environment-variables"],
+          "presets": ["react-native"]
+        },
+        "test":{
+          "plugins": [
+            "transform-es2015-modules-commonjs"
+          ],
+          "presets": [
+            "es2015",
+            "react-native",
+            "stage-0"
+          ]
+        },
+        "production": {
+            "plugins": ["transform-react-jsx-source", "transform-inline-environment-variables"],
+            "presets": ["react-native"]
+        }
+      }
+    }
+    `
+
+    await writeFile('.babelrc', customRC)
 
     // Add support for JSX source files
     let sourceExts
