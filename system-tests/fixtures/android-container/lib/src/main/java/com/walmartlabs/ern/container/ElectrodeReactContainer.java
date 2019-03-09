@@ -33,6 +33,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.walmartlabs.ern.container.plugins.CodePushPlugin;
 import com.walmartlabs.ern.container.plugins.BridgePlugin;
 import com.microsoft.codepush.react.CodePush;
+import com.microsoft.codepush.react.ReactInstanceHolder;
 import com.walmartlabs.electrode.reactnative.bridge.helpers.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -128,6 +129,7 @@ public class ElectrodeReactContainer {
             }
 
             sElectrodeReactNativeHost = new ElectrodeReactNativeHost(application);
+            CodePush.setReactInstanceHolder(sElectrodeReactNativeHost);
 
             askForOverlayPermissionIfDebug(application);
 
@@ -240,7 +242,7 @@ public class ElectrodeReactContainer {
         }
     }
 
-    private static class ElectrodeReactNativeHost extends ReactNativeHost {
+    private static class ElectrodeReactNativeHost extends ReactNativeHost implements ReactInstanceHolder {
 
         private ElectrodeReactNativeHost(Application application) {
             super(application);
