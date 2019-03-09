@@ -43,6 +43,7 @@ import com.ern.api.impl.{{apiName}}ApiRequestHandlerProvider;
 {{/apiImplementations}}
 {{#loadJsBundleFromCustomPath}}
 import com.microsoft.codepush.react.CodePush;
+import com.microsoft.codepush.react.ReactInstanceHolder;
 {{/loadJsBundleFromCustomPath}}
 {{#hasElectrodeBridgePlugin}}
 import com.walmartlabs.electrode.reactnative.bridge.helpers.Logger;
@@ -157,6 +158,9 @@ public class ElectrodeReactContainer {
             }
 
             sElectrodeReactNativeHost = new ElectrodeReactNativeHost(application);
+            {{#loadJsBundleFromCustomPath}}
+            CodePush.setReactInstanceHolder(sElectrodeReactNativeHost);
+            {{/loadJsBundleFromCustomPath}}
 
             askForOverlayPermissionIfDebug(application);
 
@@ -278,7 +282,7 @@ public class ElectrodeReactContainer {
         }
     }
 
-    private static class ElectrodeReactNativeHost extends ReactNativeHost {
+    private static class ElectrodeReactNativeHost extends ReactNativeHost {{#loadJsBundleFromCustomPath}}implements ReactInstanceHolder {{/loadJsBundleFromCustomPath}}{
 
         private ElectrodeReactNativeHost(Application application) {
             super(application);
